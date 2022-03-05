@@ -1,0 +1,18 @@
+<html>
+    <head>
+        <title>Hello</title>
+    </head>
+    <body>
+
+        {% for ts in test %}
+            <p>{{ ts }}</p>
+            <!-- <p>{{ts.id}}- {{ ts.manufacturer_name }}</p> -->
+        {% endfor %}
+
+        <p>****************************************************************</p>
+
+        {% for lp in lop %}
+        <p>{{ lp.part_name }}</p>
+        {% endfor %}
+    </body>
+</html>

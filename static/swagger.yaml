@@ -1,0 +1,182 @@
+openapi: 3.0.0
+info:
+    version: 1.0.0
+    title: ParsTasmim Assignment
+    description: AutoMobile Project
+
+paths:
+    /listofparts:
+        get:
+            tags:
+                - Parts
+            description: List All Parts for an AutoMobile
+            parameters:
+                - in: query
+                  name: automobile_name
+                  required: true
+                  description: AutoMobile Name
+                  schema:
+                      type: string
+                      example: Benz
+
+            responses:
+                "200":
+                    description: query Success!
+                    content:
+                        text/plain:
+                            schema:
+                                type: string
+                                example:
+                                    {
+                                        "1": "Part 1",
+                                        "2": "Part 2",
+                                        "...": "...",
+                                    }
+
+    /uploads:
+        post:
+            tags:
+                - Upload
+            # description: Uploads a file.
+            # consumes:
+            #     - multipart/form-data
+            parameters:
+                - in: query
+                  name: partname
+                  #   type: file
+                  required: true
+                  description: AutoMobile Part Name
+                  schema:
+                      type: string
+                      example: Headlights
+
+                # - in: formData
+                #   name: upfile1
+                #   type: file
+                #   required: true 
+            requestBody:
+                content:
+                    multipart/form-data:
+                        schema:
+                            type: object
+                            properties:
+                                # 'file' will be the field name in this multipart request
+                                file:
+                                    type: string
+                                    format: binary
+
+            responses:
+                "200":
+                    description: query Success!
+                    content:
+                        text/plain:
+                            schema:
+                                type: string
+                                example: "File Upload Successful!"
+
+                "201":
+                    description: Created!
+                    content:
+                        text/plain:
+                            schema:
+                                type: string
+                                example: "File Upload Successful!"
+
+
+    /download-single:
+        get:
+            tags:
+                - Download_Single_File
+            # description: Uploads a file.
+            # consumes:
+            #     - multipart/form-data
+            parameters:
+                - in: query
+                  name: partname
+                  #   type: file
+                  required: true
+                  description: AutoMobile Part Name
+                  schema:
+                      type: string
+                      example: Headlights
+
+            responses:
+                responseBody:
+                    content:
+                        multipart/octed-stream:
+                            schema:
+                                type: object
+                                properties:
+                                    # 'file' will be the field name in this multipart request
+                                    file:
+                                        type: string
+                                        format: binary
+
+    /download-all:
+        get:
+            tags:
+                - Download_All_File
+            parameters:
+                - in: query
+                  name: partname
+                  #   type: file
+                  required: true
+                  description: AutoMobile Part Name
+                  schema:
+                      type: string
+                      example: Headlights
+
+            responses:
+                responseBody:
+                    content:
+                        multipart/octed-stream:
+                            schema:
+                                type: object
+                                properties:
+                                    # 'file' will be the field name in this multipart request
+                                    file:
+                                        type: string
+                                        format: binary
+
+    /download-all-automobiles:
+        get:
+            tags:
+                - Download All Files For AutoMobile Model
+            parameters:
+                - in: query
+                  name: modelname
+                  #   type: file
+                  required: true
+                  description: AutoMobile Model Name
+                  schema:
+                      type: string
+                      example: S 300
+
+            responses:
+                responseBody:
+                    content:
+                        multipart/octed-stream:
+                            schema:
+                                type: object
+                                properties:
+                                    # 'file' will be the field name in this multipart request
+                                    file:
+                                        type: string
+                                        format: binary
+
+            # responses:
+            #     "200":
+            #         description: Files Ready for Download!
+            #         content:
+            #             text/plain:
+            #                 schema:
+            #                     type: string
+            #                     example: binary
+
+            # "201":
+            #     description: Created!
+            #     content:
+            #         text/plain:
+            #             schema:
+            #                 type: string
+            #                 example: "File {FileName} download Successful!"
