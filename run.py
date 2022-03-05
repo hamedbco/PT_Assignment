@@ -2,27 +2,26 @@
 # from app.__init__ import *
 import os
 from config import Configuration, ViewsConfig, MailConfig
-from flask import Flask
-from sqlalchemy.orm import sessionmaker
+from flask import Flask, jsonify, render_template, request
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.orm import sessionmaker, relationship
 from flask_migrate import Migrate
 from sqlalchemy import ForeignKey, Column, Integer, VARCHAR, DateTime, Boolean
-from sqlalchemy.orm import relationship
+# from sqlalchemy.orm import relationship
 import datetime as dt
-from flask import Flask, jsonify, render_template, request
+# from flask import Flask, 
 from sqlalchemy import func, and_
 from werkzeug.utils import secure_filename
 from func import allowedFile, zipFile, getAllFile
 from send_mail import sendMail
 from seed_db import seeder
 
-app = Flask(__name__)
+app = Flask(__name__, instance_relative_config=False)
 # app.config.from_object(Configuration)
 app.config ['SQLALCHEMY_DATABASE_URI'] = Configuration.SQLALCHEMY_DATABASE_URI
 app.config ['SQLALCHEMY_TRACK_MODIFICATIONS'] = Configuration.SQLALCHEMY_TRACK_MODIFICATIONS
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
-
 Session = sessionmaker(bind=db)
 session = Session()
 
@@ -415,5 +414,5 @@ def download_all_automobile():
 
 if __name__ == "__main__":
     # port = int(os.environ.get('PORT', 5000))
-    # app.run(debug=True, host='0.0.0.0', port=port)
-    app.run(debug=True)
+    # app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=True, port=5000)

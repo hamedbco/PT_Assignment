@@ -23,7 +23,7 @@ services:
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
-      PGADMIN_CONFIG_SERVER_MODE: 'True'
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
     volumes:
       - pgadmin:/var/lib/pgadmin
     ports:
@@ -33,13 +33,13 @@ services:
     restart: unless-stopped
 
   web:
-    build: .
-    command: FLASK_APP=run.py flask run -h 0.0.0.0
+    build: .  # command: FLASK_APP=run.py flask run -h 0.0.0.0
     container_name: automobileProject_container
     image: python:3.8.0-alpine
     depends_on:
       - postgres
     environment:
+      STAGE: postgres
       SQLALCHEMY_DATABASE_URI: postgresql+psycopg2://postgres:123456@localhost:5432/postgres
     volumes:
       - . :/usr/src/app/
