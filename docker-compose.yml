@@ -33,17 +33,21 @@ services:
     restart: unless-stopped
 
   web:
-    build: .  # command: FLASK_APP=run.py flask run -h 0.0.0.0
+    build: 
+      context: .
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t
+    env_file: database.conf  # command: FLASK_APP=run.py flask run -h 0.0.0.0
     container_name: automobileProject_container
     image: python:3.8.0-alpine
     depends_on:
       - postgres
     environment:
-      STAGE: postgres
+      # STAGE: postgres
       SQLALCHEMY_DATABASE_URI: postgresql+psycopg2://postgres:123456@localhost:5432/postgres
     volumes:
       - . :/usr/src/app/
-      - . :/usr/src/app/migrations
+      # - . :/usr/src/app/migrations
     ports:
       - "5000:5000"
     networks:
@@ -52,9 +56,11 @@ services:
 
 networks:
   postgres:
+    
     driver: bridge
+    
 
 volumes:
   postgres:
   pgadmin:
-  web:
+  # web:

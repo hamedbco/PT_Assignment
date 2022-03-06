@@ -12,7 +12,7 @@ RUN pip install --upgrade pip
 
 COPY ./requirements.txt /usr/src/app/requirements.txt
 
-# RUN export LDFLAGS="-L/usr/local/opt/openssl/lib"
+RUN export LDFLAGS="-L/usr/local/opt/openssl/lib"
 
 RUN pip install -r requirements.txt
 
@@ -24,5 +24,7 @@ WORKDIR /usr/src/app/
 
 RUN ls -la
 
-RUN . docker-entrypoint.sh
-# CMD [".", "docker-entrypoint.sh"]
+ENV FLASK_APP=run.py
+
+# RUN . docker-entrypoint.sh
+CMD ["flask", "run"]

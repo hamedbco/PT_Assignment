@@ -16,7 +16,7 @@ from func import allowedFile, zipFile, getAllFile
 from send_mail import sendMail
 from seed_db import seeder
 
-app = Flask(__name__, instance_relative_config=False)
+app = Flask(__name__)
 # app.config.from_object(Configuration)
 app.config ['SQLALCHEMY_DATABASE_URI'] = Configuration.SQLALCHEMY_DATABASE_URI
 app.config ['SQLALCHEMY_TRACK_MODIFICATIONS'] = Configuration.SQLALCHEMY_TRACK_MODIFICATIONS
