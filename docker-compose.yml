@@ -25,7 +25,6 @@ services:
     build: .
     stdin_open: true
     tty: true
-
     depends_on:
       - postgres
     environment:
@@ -35,7 +34,6 @@ services:
       POSTGRES_PASSWORD: 123456
       POSTGRES_PORT_5432_TCP_ADDR: postgresql
       POSTGRES_PORT_5432_TCP_PORT: 5432
-
     networks:
       - postgres
     expose:
@@ -49,6 +47,7 @@ services:
     links:
       - postgres
     restart: unless-stopped
+
 
 networks:
   postgres:
