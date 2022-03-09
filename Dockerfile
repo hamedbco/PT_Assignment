@@ -1,30 +1,41 @@
-# pull official base image
-FROM python:3.8.0-alpine
+# FROM python:3.9-slim-buster
+FROM ubuntu:18.04
 
-WORKDIR /usr/src/app
+RUN apt-get update && apt-get install -y \
+    python3 \
+    python3-pip \
+    python-dev \
+    curl wget locales
 
+WORKDIR /usr/src/app/ 
+
+# set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-RUN apk update && apk add postgresql-dev gcc python3-dev musl-dev
+RUN locale-gen en_US.UTF-8
+ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
 
-RUN pip install --upgrade pip
+COPY requirements.txt /usr/src/app/
 
-COPY ./requirements.txt /usr/src/app/requirements.txt
+RUN python3 -m pip install --upgrade pip
 
-RUN export LDFLAGS="-L/usr/local/opt/openssl/lib"
+RUN pip install  \
+    setuptools \
+    wheel
 
 RUN pip install -r requirements.txt
 
 COPY . /usr/src/app/
 
+RUN ls -la
+
+RUN chmod +x /usr/src/app/entrypoint.sh
+
+ENV FLASK_APP=app.py
+
 EXPOSE 5000
 
 WORKDIR /usr/src/app/
 
-RUN ls -la
-
-ENV FLASK_APP=run.py
-
-# RUN . docker-entrypoint.sh
-CMD ["flask", "run"]
+CMD [ "python3", "app.py" ]
