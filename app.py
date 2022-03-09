@@ -1,18 +1,15 @@
 
-# from app.__init__ import *
-import os
-from flask import Flask, jsonify, render_template, request
-from config import Configuration, ViewsConfig, MailConfig
 
+
+import os
+import datetime as dt
+from flask import Flask, jsonify, render_template, request
+from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import sessionmaker, relationship
-from sqlalchemy.ext.declarative import declarative_base
-from flask_migrate import Migrate
 from sqlalchemy import ForeignKey, Column, Integer, VARCHAR, DateTime, Boolean
-# from sqlalchemy.orm import relationship
-import datetime as dt
-# from flask import Flask,
 from sqlalchemy import func, and_
+from config import Configuration, ViewsConfig, MailConfig
 from werkzeug.utils import secure_filename
 from func import allowedFile, zipFile, getAllFile
 from send_mail import sendMail
