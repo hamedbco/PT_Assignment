@@ -15,12 +15,20 @@ from func import allowedFile, zipFile, getAllFile
 from send_mail import sendMail
 from seed_db import seeder
 
+
 app = Flask(__name__)
-# app.config.from_object(Configuration)
+# app.config.from_pyfile(Configuration)
+# Set app Config for database
 app.config['SQLALCHEMY_DATABASE_URI'] = Configuration.SQLALCHEMY_DATABASE_URI
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = Configuration.SQLALCHEMY_TRACK_MODIFICATIONS
+
+# create instance 
 db = SQLAlchemy(app)
+
+# set db migration
 migrate = Migrate(app, db)
+
+# define session
 Session = sessionmaker(bind=db)
 session = Session()
 
@@ -28,19 +36,20 @@ session = Session()
 ###################################################
 ##################### Model #######################
 ###################################################
+
+# Manufacturer Model
 class Manufacturer(db.Model):
     __tablename__ = "manufacturers"
     __table_args__ = {'extend_existing': True}
     id = Column(Integer, primary_key=True)
     manufacturer_name = Column(VARCHAR(150), nullable=False, unique=True)
     created_at = Column(DateTime, default=dt.datetime.utcnow)
-    # modified_at
     updated_at = Column(DateTime, default=dt.datetime.utcnow)
 
     def __init__(self, name):
         self.manufacturer_name = name
 
-
+# Automobile's Type Model
 class Type(db.Model):
     __tablename__ = "types"
     __table_args__ = {'extend_existing': True}
@@ -52,7 +61,7 @@ class Type(db.Model):
     def __init__(self, name):
         self.type_name = name
 
-
+# Automobile MODEL Model
 class Model(db.Model):
     __tablename__ = "models"
     __table_args__ = {'extend_existing': True}
@@ -91,7 +100,7 @@ class Part(db.Model):
         self.model_id = modelID
         self.file_id = fileID
 
-
+# Part Files Model
 class File(db.Model):
     __tablename__ = "files"
     __table_args__ = {'extend_existing': True}
@@ -107,7 +116,7 @@ class File(db.Model):
         self.file_extention = extention
         self.part_id = partID
 
-
+# User Model
 class User(db.Model):
     __tablename__ = "users"
     __table_args__ = {'extend_existing': True}
@@ -314,6 +323,9 @@ def download_single():
 # Download All File of Part View
 @app.route('/download-all', methods=['GET'])
 def download_all():
+    
+    os.makedirs(f"{ViewsConfig.UPLOAD_FOLDER}/PartFiles", exist_ok=True)
+    
     #
     partName = request.args.get('partname')
     # namePart = db.session.query(Part.part_name).first()[0]
@@ -325,7 +337,7 @@ def download_all():
         resp.status_code = 404
         return resp
 
-    partId = query[0]
+    partId = int(query[0])
 
     #
     listPartFiles = []
@@ -359,6 +371,8 @@ def download_all():
 # Download All File of AutoMobile
 @app.route('/download-all-automobiles', methods=['GET'])
 def download_all_automobile():
+
+    os.makedirs(f"{ViewsConfig.UPLOAD_FOLDER}/AutoMobileFiles", exist_ok=True)
     #
     modelName = request.args.get('modelname')
     query = db.session.query(Model.id).filter(func.lower(

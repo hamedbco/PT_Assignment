@@ -13,7 +13,6 @@ class Configuration:
 class ViewsConfig:
     #
     UPLOAD_FOLDER = f"{os.getcwd()}/static/uploads"
-
     #
     ALLOWED_EXTENTIONS = set(
         ['doc', 'docx', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
