@@ -21,7 +21,7 @@ def sendMail(getUserEmailResult, automobile, part, link):
 
         for email in getUserEmailResult:
             # Email Content
-            msg = Message('ParsTasmim',
+            msg = Message('Pedram Taheri',
                           sender=MailConfig.SENDER,
                           recipients=emailList)
             msg.body = f"Hi Dear User\nA New File was Upload for a AutoMobile Part\nFile Infomations\nAutoMobile's Name: {automobile[0]}\nPart's Name: {part[0]}\nDownload File Link: {link}"
